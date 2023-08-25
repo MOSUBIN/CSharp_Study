@@ -1,0 +1,53 @@
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
+
+namespace EmptyProject01
+{
+
+    public class InventoryManagement
+    {
+        public int ID { get; set; }
+        public string TRANSACTIONDATE { get; set; }
+        public string DIVISION { get; set; }
+        public string STORENAME { get; set; }
+        public string NAME { get; set; }
+        public int QUANTITY { get; set; }
+        public int STANDARD { get; set; }
+        public string UNIT { get; set; }
+        public int UNITPRICE { get; set; }
+        public int SUM { get; set; }
+    }
+    public class PersonContext : DbContext
+    {
+        public DbSet<InventoryManagement> InventoryManagement { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseOracle("User Id=c##scott;Password=c##tiger;Data Source=127.0.0.1/XE;");
+        }
+    }
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            using (var context = new PersonContext())
+            {
+                context.Database.EnsureCreated(); //테이블이 있다면 아무 동작도 하지 않습니다.
+                // 데이터 삽입
+                var inventoryManagements = new List<InventoryManagement>
+                {
+                    new InventoryManagement { ID = 1, TRANSACTIONDATE = "2023-08-21", DIVISION="출고", STORENAME = "안동대학교", NAME = "라즈베리파이",
+                                              QUANTITY = 50, STANDARD = 264 }
+                };
+
+                context.InventoryManagement.AddRange(inventoryManagements);
+                context.SaveChanges();
+                Console.WriteLine("데이터 삽입 성공!");
+            }
+        }
+    }
+}
