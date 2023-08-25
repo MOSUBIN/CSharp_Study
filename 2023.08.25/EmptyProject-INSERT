@@ -58,7 +58,7 @@ namespace EmptyProject01
 
                 context.InventoryManagement.AddRange(InventoryManagements);
                 context.SaveChanges();
-                Console.WriteLine("데이터 삽입 성공!");
+                Console.WriteLine("데이터 정보 삽입을 성공했습니다!");
             }
         }
     }
