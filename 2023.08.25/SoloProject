@@ -1,0 +1,269 @@
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
+
+namespace ProjectSolo
+{
+
+    public class InventoryManagement
+    {
+        public int ID { get; set; }
+        public string TRANSACTIONDATE { get; set; }
+        public string DIVISION { get; set; }
+        public string STORENAME { get; set; }
+        public string NAME { get; set; }
+        public int QUANTITY { get; set; }
+        public string STANDARD { get; set; }
+        public string UNIT { get; set; }
+        public int UNITPRICE { get; set; }
+        public int SUM { get; set; }
+    }
+    public class PersonContext : DbContext
+    {
+        public DbSet<InventoryManagement> InventoryManagement { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseOracle("User Id=c##scott;Password=c##tiger;Data Source=127.0.0.1/XE;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<InventoryManagement>()   //Primary key 지정
+                .HasKey(p => p.ID);
+
+            modelBuilder.Entity<InventoryManagement>()   //Varchar2(30) 30크기를 정할 때
+                .Property(p => p.TRANSACTIONDATE)
+                .HasMaxLength(30);
+
+            modelBuilder.Entity<InventoryManagement>()
+                .Property(p => p.DIVISION)
+                .HasMaxLength(30);
+
+            modelBuilder.Entity<InventoryManagement>()
+              .Property(p => p.STORENAME)
+              .HasMaxLength(30);
+
+            modelBuilder.Entity<InventoryManagement>()
+             .Property(p => p.NAME)
+             .HasMaxLength(30);
+
+            modelBuilder.Entity<InventoryManagement>()
+              .HasKey(p => p.QUANTITY);
+
+            modelBuilder.Entity<InventoryManagement>()
+             .Property(p => p.STANDARD)
+             .HasMaxLength(30);
+
+            modelBuilder.Entity<InventoryManagement>()
+             .Property(p => p.UNIT)
+             .HasMaxLength(30);
+
+            modelBuilder.Entity<InventoryManagement>()
+           .HasKey(p => p.UNITPRICE);
+
+            modelBuilder.Entity<InventoryManagement>()
+           .HasKey(p => p.SUM);
+
+        }
+    }
+
+    internal class Program
+    {
+        static int n = 0;
+        static void Main(string[] args)
+        {
+            List<InventoryManagement> list = new List<InventoryManagement>();
+            Console.WriteLine("|\\_/|");
+            Console.WriteLine("|q p|   /}");
+            Console.WriteLine("( 0 )\"\"\"\\");
+            Console.WriteLine("|\"^\"`    |");
+            Console.WriteLine("||_/=\\\\__|");
+            while (true)
+            {
+                Console.WriteLine("1. 데이터 생성");
+                Console.WriteLine("2. 데이터 삽입");
+                Console.WriteLine("3. 데이터 삭제");
+                Console.WriteLine("4. 데이터 조회");
+                Console.WriteLine("5. 데이터 수정");
+                Console.WriteLine("6. 프로그램 종료");
+                Console.Write("메뉴 : ");
+                Console.WriteLine(" ");
+                n = Int32.Parse(Console.ReadLine());
+
+                switch (n)
+                {
+                    //데이터 생성
+                    case 1:
+                        using (var context = new PersonContext())
+                        {
+                            // 데이터베이스와 테이블 생성
+                            context.Database.EnsureDeleted();
+                            context.Database.EnsureCreated();
+                            Console.WriteLine("테이블 생성 완료.");
+                        }
+                        break;
+
+                    //데이터 삽입 
+                    case 2:
+
+                        using (var context = new PersonContext())
+                        {
+                            context.Database.EnsureCreated(); //테이블이 있다면 아무 동작도 하지 않습니다.
+                                                              // 데이터 삽입
+
+
+                            Console.WriteLine("ID를 입력해 주세요.");
+                            int ID = int.Parse(Console.ReadLine());
+                            Console.WriteLine("거래날짜(YYYY-MM-DD)를 입력해 주세요.");
+                            string TRANSACTIONDATE = Console.ReadLine();
+                            Console.WriteLine("구분(출고/입고/반품)처리를 입력해 주세요.");
+                            string DIVISION = Console.ReadLine();
+                            Console.WriteLine("거래처를 입력해 주세요.");
+                            string STORENAME = Console.ReadLine();
+                            Console.WriteLine("품목명을 입력해 주세요.");
+                            string NAME = Console.ReadLine();
+                            Console.WriteLine("수량을 입력해 주세요.");
+                            int QUANTITY = int.Parse(Console.ReadLine());
+                            Console.WriteLine("규격 입력해 주세요.");
+                            string STANDARD = Console.ReadLine();
+                            Console.WriteLine("단위를 입력해 주세요.");
+                            string UNIT = Console.ReadLine();
+                            Console.WriteLine("단가를 입력해 주세요.");
+                            int UNITPRICE = int.Parse(Console.ReadLine());
+                            Console.WriteLine("전체금액을 입력해 주세요.");
+                            int SUM = QUANTITY * UNITPRICE;
+
+                           
+                            context.InventoryManagement.AddRange();
+                            context.SaveChanges();
+                            Console.WriteLine("데이터 정보 삽입을 성공했습니다!");
+
+                            var InventoryManagement = new InventoryManagement
+                            {
+                                ID = ID,
+                                TRANSACTIONDATE = TRANSACTIONDATE,
+                                DIVISION = DIVISION,
+                                STORENAME = STORENAME,
+                                NAME = NAME,
+                                QUANTITY = QUANTITY,
+                                STANDARD = STANDARD,
+                                UNIT = UNIT,
+                                UNITPRICE = UNITPRICE,
+                                SUM = SUM
+                            };
+
+
+                            context.InventoryManagement.AddRange(InventoryManagement);
+                            context.SaveChanges();
+                            Console.WriteLine("데이터베이스 테이블이 생성되었습니다.");
+                        };
+
+                        break;
+
+                    //데이터 삭제
+                    case 3:
+
+                        using (var context = new PersonContext())
+                        {
+                            Console.WriteLine("반품할 거래처를 입력해 주세요.");
+                            string STORENAME = Console.ReadLine();
+
+                            // 출고 -> 반품 (경북대학교 찾기) 
+                            var personToDelete = context.InventoryManagement.FirstOrDefault(p => p.STORENAME == STORENAME);
+
+                            // 해당 정보가 존재하면 삭제
+                            if (personToDelete != null)
+                            {
+                                context.InventoryManagement.Remove(personToDelete);
+
+
+
+                                // 변경 사항 저장!
+                                context.SaveChanges();
+                                Console.WriteLine("반품처리 완료");
+                            }
+                            else
+                            {
+                                Console.WriteLine("데이터 정보가 없습니다.");
+                            }
+                        }
+                        break;
+
+                        //데이터조회
+                    case 4:
+                        using (var context = new PersonContext())
+                        {
+                            var InventoryManagements = context.InventoryManagement.ToList();
+
+                            // 헤더 출력
+                            Console.WriteLine($"{nameof(InventoryManagement.ID),-5} {nameof(InventoryManagement.TRANSACTIONDATE),-15} " +
+                                $"{nameof(InventoryManagement.DIVISION),-5} {nameof(InventoryManagement.STORENAME),-15}" +
+                                 $"{nameof(InventoryManagement.NAME),-5} {nameof(InventoryManagement.QUANTITY),-15}" +
+                                 $"{nameof(InventoryManagement.STANDARD),-5} {nameof(InventoryManagement.UNIT),-15}" +
+                                 $"{nameof(InventoryManagement.UNITPRICE),-5} {nameof(InventoryManagement.SUM),-15} "
+                                 );
+                            Console.WriteLine(new string('-', 40));
+                            /* nameof 연산자는 C# 6.0에서 도입된 연산자로, 변수, 타입, 또는 멤버의 이름을 문자열로 반환
+                               주로 예외 메시지나 로깅, 속성명 변경 알림 등에서 사용 */
+
+                            // 데이터 출력
+                            foreach (var p in InventoryManagements)
+                            {
+                                Console.WriteLine($"{p.ID,-5} {p.TRANSACTIONDATE,-15} {p.DIVISION,-5} {p.STORENAME,-15}" +
+                                   $"{p.NAME,-5} {p.QUANTITY,-15} {p.STANDARD,-5} {p.UNIT,-15}" +
+                                   $"{p.UNITPRICE,-5} {p.SUM,-15} ");
+                            }
+                        }
+                        break;
+
+                    //데이터 수정
+                    case 5:
+                        using (var context = new PersonContext())
+                        {
+                            Console.WriteLine("수정할 거래처를 입력해 주세요.");
+                            string STORENAME = Console.ReadLine();
+                            Console.WriteLine("수정할 거래날짜를 입력해 주세요.");
+                            string TRANSACTIONDATE = Console.ReadLine();
+                            Console.WriteLine("수정할 구분(출고/입고)을 입력해 주세요.");
+                            string DIVISION = Console.ReadLine();
+
+
+                            // 출고 -> 입고 (수정할 거래처 찾기)
+                            var personToEdit = context.InventoryManagement.FirstOrDefault(p => p.STORENAME == STORENAME);
+
+                            // 해당 정보가 존재하면 수정!
+                            if (personToEdit != null)
+                            {
+                                personToEdit.TRANSACTIONDATE = TRANSACTIONDATE;
+                                personToEdit.DIVISION = DIVISION;
+
+
+
+                                // 변경 사항 저장!
+                                context.SaveChanges();
+                                Console.WriteLine("출고에서 입고 변경이 완료되었습니다.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("안동대학교 정보가 없습니다.");
+                            }
+                        }
+
+                        break;
+
+
+                    //프로그램 종료
+                    case 6:
+                        Console.WriteLine("프로그램을 종료합니다. 감사합니다.");
+                        Environment.Exit(0);
+
+
+
+                        break;
+                }
+            }
+        }
+    }
+}
