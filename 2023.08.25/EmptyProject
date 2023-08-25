@@ -11,7 +11,7 @@ namespace EmptyProject01
         public string STORENAME { get; set; }
         public string NAME { get; set; }
         public int QUANTITY { get; set; }
-        public int STANDARD { get; set; }
+        public string STANDARD { get; set; }
         public string UNIT { get; set; }
         public int UNITPRICE { get; set; }
         public int SUM { get; set; }
@@ -46,20 +46,21 @@ namespace EmptyProject01
              .Property(p => p.NAME)
              .HasMaxLength(30);
 
-            modelBuilder.Entity<InventoryManagement>()  
+            modelBuilder.Entity<InventoryManagement>()
               .HasKey(p => p.QUANTITY);
 
-            modelBuilder.Entity<InventoryManagement>()  
-              .HasKey(p => p.STANDARD);
+            modelBuilder.Entity<InventoryManagement>()
+             .Property(p => p.STANDARD)
+             .HasMaxLength(30);
 
             modelBuilder.Entity<InventoryManagement>()
              .Property(p => p.UNIT)
              .HasMaxLength(30);
 
-            modelBuilder.Entity<InventoryManagement>()  
-           .HasKey(p => p.UNITPRICE);    
+            modelBuilder.Entity<InventoryManagement>()
+           .HasKey(p => p.UNITPRICE);
 
-            modelBuilder.Entity<InventoryManagement>() 
+            modelBuilder.Entity<InventoryManagement>()
            .HasKey(p => p.SUM);
 
         }
