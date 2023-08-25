@@ -14,6 +14,7 @@ namespace EmptyProject01
         public int STANDARD { get; set; }
         public string UNIT { get; set; }
         public int UNITPRICE { get; set; }
+        public int SUM { get; set; }
     }
     public class PersonContext : DbContext
     {
@@ -45,19 +46,21 @@ namespace EmptyProject01
              .Property(p => p.NAME)
              .HasMaxLength(30);
 
-            modelBuilder.Entity<InventoryManagement>()   //Primary key 지정
+            modelBuilder.Entity<InventoryManagement>()  
               .HasKey(p => p.QUANTITY);
 
-            modelBuilder.Entity<InventoryManagement>()   //Primary key 지정
+            modelBuilder.Entity<InventoryManagement>()  
               .HasKey(p => p.STANDARD);
 
             modelBuilder.Entity<InventoryManagement>()
              .Property(p => p.UNIT)
              .HasMaxLength(30);
 
-            modelBuilder.Entity<InventoryManagement>()   //Primary key 지정
-           .HasKey(p => p.UNITPRICE);
+            modelBuilder.Entity<InventoryManagement>()  
+           .HasKey(p => p.UNITPRICE);    
 
+            modelBuilder.Entity<InventoryManagement>() 
+           .HasKey(p => p.SUM);
 
         }
     }
