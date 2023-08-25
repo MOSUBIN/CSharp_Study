@@ -46,7 +46,7 @@ namespace EmptyProject01
 
                     // 변경 사항 저장!
                     context.SaveChanges();
-                    Console.WriteLine("데이터 수정 성공!");
+                    Console.WriteLine("출고에서 입고 변경이 완료되었습니다.");
                 }
                 else
                 {
