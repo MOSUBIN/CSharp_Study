@@ -1,0 +1,104 @@
+using Microsoft.AspNetCore.Mvc;
+using MVCTest01.Models;
+using System.Diagnostics;
+using System.Reflection.Metadata;
+
+namespace MVCTest01.Controllers
+{
+    public class HomeController : Controller
+    {
+
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public string Index(Grade grade)
+        {
+           
+            double Average = (ConvertGradeToValue(grade.A) + ConvertGradeToValue(grade.B) + ConvertGradeToValue(grade.C) + ConvertGradeToValue(grade.D)) / 4;
+            double Mean = (ConvertGradeToValue1(grade.A) + ConvertGradeToValue1(grade.B) + ConvertGradeToValue1(grade.C) + ConvertGradeToValue1(grade.D)) / 4;
+            
+            return "A :" + grade.A + " " + "B: " + grade.B + " " + "C: " + grade.C + " " + "D: " + grade.D + "\n" + "4.5점 기준: 평균 " + Math.Truncate(Average*100)/100
+                + "\n" + "100점 기준: 평균 " + Math.Truncate(Mean*10)/10;
+
+            
+        }
+        private double ConvertGradeToValue(string grade)
+        {
+            switch (grade)
+            {
+                case "4.5":
+                    return 4.5;
+                case "4.0": 
+                    return 4.0;
+                case "3.5": 
+                    return 3.5;
+                case "3.0": 
+                    return 3.0;
+                case "2.5": 
+                    return 2.5;
+                case "2.0": 
+                    return 2.0;
+                case "1.5": 
+                    return 1.5;
+                case "1.0": 
+                    return 1.0;
+                case "0.5": 
+                    return 0.5;
+                default: 
+                    return 0.0;
+            }
+             
+
+        }
+
+        private double ConvertGradeToValue1(string grade)
+        {
+            switch (grade)
+            {
+                case "4.5":
+                    return 100;
+                case "4.0":
+                    return 95;
+                case "3.5":
+                    return 90;
+                case "3.0":
+                    return 85;
+                case "2.5":
+                    return 80;
+                case "2.0":
+                    return 75;
+                case "1.5":
+                    return 70;
+                case "1.0":
+                    return 65;
+                case "0.5":
+                    return 60;
+                default:
+                    return 0.0;
+            }
+
+
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
