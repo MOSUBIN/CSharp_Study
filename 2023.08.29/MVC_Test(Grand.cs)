@@ -1,0 +1,11 @@
+
+        public string A { get; set; }
+        public string B { get; set; }
+        public string C { get; set; }
+        public string D { get; set; }
+
+        public string Average { get; set; }
+
+        public string Mean { get; set; }
+    }
+}
