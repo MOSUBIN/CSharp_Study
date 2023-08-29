@@ -1,0 +1,92 @@
+@model Grade
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4" id="ex1">학점 계산기</h1>
+    <style>
+        #ex1 {
+            font-weight: bold;
+        }
+    </style>
+</div>
+
+<div class="con-sm-20 ">
+
+    
+    <form method="post" action="./">
+        <label asp-for="A" , font-weight:bold;>성적 A를 입력해주세요.</label>
+        <br />
+        <select name="A">
+            <option value="none">=== 선택 ===</option>
+            <option value="4.5" selected>A+</option>
+            <option value="4.0">A</option>
+            <option value="3.5">B+</option>
+            <option value="3.0">B</option>
+            <option value="2.5">C+</option>
+            <option value="2.0">C</option>
+            <option value="1.5">D+</option>
+            <option value="1.0">D</option>
+            <option value="0.5">F</option>
+        </select>
+
+        <br />
+        <br />
+        <label asp-for="B" , font-weight:bold;>성적 B를 입력해주세요.</label>
+        <br />
+        <select name="B">
+            <option value="none">=== 선택 ===</option>
+            <option value="4.5" selected>A+</option>
+            <option value="4.0">A</option>
+            <option value="3.5">B+</option>
+            <option value="3.0">B</option>
+            <option value="2.5">C+</option>
+            <option value="2.0">C</option>
+            <option value="1.5">D+</option>
+            <option value="1.0">D</option>
+            <option value="0.5">F</option>
+        </select>
+        <br />
+        <br />
+        <label asp-for="C" , font-weight:bold;>성적 C를 입력해주세요.</label>
+        <br />
+        <select name="C">
+            <option value="none">=== 선택 ===</option>
+            <option value="4.5" selected>A+</option>
+            <option value="4.0">A</option>
+            <option value="3.5">B+</option>
+            <option value="3.0">B</option>
+            <option value="2.5">C+</option>
+            <option value="2.0">C</option>
+            <option value="1.5">D+</option>
+            <option value="1.0">D</option>
+            <option value="0.5">F</option>
+        </select>
+        <br />
+        <br />
+        <label asp-for="D" , font-weight:bold;>성적 D를 입력해주세요.</label>
+        <br />
+        <select name="D">
+            <option value="none">=== 선택 ===</option>
+            <option value="4.5" selected>A+</option>
+            <option value="4.0">A</option>
+            <option value="3.5">B+</option>
+            <option value="3.0">B</option>
+            <option value="2.5">C+</option>
+            <option value="2.0">C</option>
+            <option value="1.5">D+</option>
+            <option value="1.0">D</option>
+            <option value="0.5">F</option>
+        </select>
+        <br />
+        <br />
+
+        <input type="submit" value="Submit" class="btn btn-outline-primary" />
+    </form>
+
+
+
+   
+</div>
